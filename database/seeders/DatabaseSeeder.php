@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,4 +20,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
     }
+
+
+public function run()
+{
+    Role::create(['name' => 'Admin']);
+    Role::create(['name' => 'Customer']);
+    Role::create(['name' => 'Employee']);
+}
 }

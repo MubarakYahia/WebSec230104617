@@ -186,3 +186,36 @@ class UsersController extends Controller {
         return redirect(route('profile', ['user'=>$user->id]));
     }
 } 
+
+
+public function createEmployee()
+{
+    // Only Admin (role_id = 1) can add employees
+    if (auth()->user()->role_id !== 1) {
+        abort(403, 'Only admins can add employees.');
+    }
+
+    return view('users.create_employee');
+}
+
+public function storeEmployee(Request $request)
+{
+    if (auth()->user()->role_id !== 1) {
+        abort(403, 'Only admins can add employees.');
+    }
+
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|string|min:6|confirmed',
+    ]);
+
+    User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role_id' => 3 // 3 = Employee
+    ]);
+
+    return redirect()->route('employees.create')->with('success', 'Employee added successfully.');
+}
