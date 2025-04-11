@@ -176,6 +176,21 @@ class UsersController extends Controller {
         return redirect()->back()->with('success', 'Credit added successfully!');
     }
     
+    
+    public function reset(Request $request)
+    {
+        $user = auth()->user();
+
+       
+        if (!in_array($user->role, ['admin', 'employee'])) {
+            abort(401, 'Unauthorized.');
+        }
+
+        User::where('role', 'customer')->update(['credit' => 0]);
+
+        return back()->with('success', 'All customer credits have been reset.');
+    }
+
 
     public function editPassword(Request $request, User $user = null) {
 

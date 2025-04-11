@@ -44,6 +44,10 @@
         </form>
         @endif
 
+        <form action="{{ route('credit.reset') }}" method="POST" onsubmit="return confirm('Are you sure you want to reset all credits?')">
+    @csrf
+    <button class="btn btn-warning">Reset Credit</button>
+</form>
         <div class="row mt-3">
             <div class="col col-6"></div>
             @if(auth()->user()->hasPermissionTo('admin_users') || auth()->id() == $user->id)

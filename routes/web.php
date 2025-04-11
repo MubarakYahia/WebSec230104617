@@ -18,12 +18,8 @@ Route::get('users/delete/{user}', [UsersController::class, 'delete'])->name('use
 Route::post('/profile/add-credit', [UsersController::class, 'addCredit'])->name('profile.add_credit');
 Route::get('users/edit_password/{user?}', [UsersController::class, 'editPassword'])->name('edit_password');
 Route::post('users/save_password/{user}', [UsersController::class, 'savePassword'])->name('save_password');
-
-
-
-Route::get('students', [StudentsController::class, 'list'])->name('students_list');
-
-
+Route::get('students', [ProductController::class, 'reset'])->name('students_list');
+Route::post('/reset-credit', [UsersController::class, 'reset'])->name('credit.reset');
 
 Route::get('products', [ProductsController::class, 'list'])->name('products_list');
 Route::post('/buy-product/{id}', [ProductsController::class, 'buyProduct'])->name('buy_product');
