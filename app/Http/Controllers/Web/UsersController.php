@@ -227,3 +227,30 @@ class UsersController extends Controller {
         return redirect(route('profile', ['user'=>$user->id]));
     }
 } 
+ /* public function showLoginLinkForm()
+    {
+        return view('users.send-login-link');
+    }
+
+    public function sendLoginLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        $token = Str::random(60); 
+        $encryptedToken = Crypt::encryptString($token); 
+
+        $loginUrl = URL::to('/loginn') . '?token=' . $encryptedToken . '&email=' . urlencode($request->email);
+
+        Mail::send([], [], function ($message) use ($user, $loginUrl) {
+            $message->to($user->email)
+                    ->subject('Login Link')
+                    ->html("Click the following link to log in: <a href=\"$loginUrl\">Login</a>");
+        });
+
+
+        return back()->with('status', 'We have emailed you a login link!');
+    } */

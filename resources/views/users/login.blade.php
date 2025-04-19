@@ -28,4 +28,7 @@
     </div>
   </div>
 </div>
+<!--<div class="mb-3 text-center">
+        <a href="{{ route('google.login') }}" class="btn btn-danger">Login with Google</a>
+      </div> -->
 @endsection
