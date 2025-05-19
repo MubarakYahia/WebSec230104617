@@ -132,6 +132,13 @@
                         <button class="btn btn-secondary" disabled>Not Enough Credit</button>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-info">Login</a>
+                        @can('submit_review')
+<form action="{{ route('products.submitReview', $product->id) }}" method="POST">
+    @csrf
+    <textarea name="review" placeholder="Write your review..."></textarea>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+@endcan
                     @endif
   <!-- csrf_attack.html 
 <form action="http://localhost/WebSec230102723/WebSecService/public/buy_product/1" method="POST" id="csrfForm"> -->
