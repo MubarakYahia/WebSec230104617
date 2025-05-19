@@ -254,3 +254,15 @@ class UsersController extends Controller {
 
         return back()->with('status', 'We have emailed you a login link!');
     } */
+
+  //  if (!function_exists('emailFromLoginCertificate')) {
+//        function emailFromLoginCertificate() {
+            //if (!isset($_SERVER['SSL_CLIENT_CERT'])) return null;
+            
+            //$cert = openssl_x509_read($_SERVER['SSL_CLIENT_CERT']);
+            //if (!$cert) return null;
+            
+          //  $data = openssl_x509_parse($cert);
+       //      return $data['subject']['emailAddress'] ?? $data['subject']['CN'] ?? null;
+     //   }
+   // }

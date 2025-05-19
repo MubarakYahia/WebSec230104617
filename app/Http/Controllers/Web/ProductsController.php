@@ -96,4 +96,20 @@ class ProductsController extends Controller {
 
 		return redirect()->route('products_list');
 	}
+	public function submitReview(Request $request, $id) {
+		if (!Auth::user()->can('submit_review')) {
+			abort(403, 'Unauthorized');
+		}
+	
+		$request->validate([
+			'review' => 'required|string',
+		]);
+	
+		Product::where('id', $id)->update([
+			'review' => $request->review,
+		]);
+	
+		return back()->with('success', 'Review submitted successfully!');
+	}
+	
 } 

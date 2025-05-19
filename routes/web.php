@@ -5,6 +5,9 @@ use App\Http\Controllers\Web\ProductsController;
 use App\Http\Controllers\Web\UsersController;
 use App\Http\Controllers\Web\StudentsController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 Route::get('register', [UsersController::class, 'register'])->name('register');
 Route::post('register', [UsersController::class, 'doRegister'])->name('do_register');
@@ -21,6 +24,7 @@ Route::get('users/edit_password/{user?}', [UsersController::class, 'editPassword
 Route::post('users/save_password/{user}', [UsersController::class, 'savePassword'])->name('save_password');
 Route::get('students', [ProductController::class, 'reset'])->name('students_list');
 Route::post('/reset-credit', [UsersController::class, 'reset'])->name('credit.reset');
+Route::post('/products/{id}/review', [ProductController::class, 'submitReview'])->name('products.submitReview');
 Route::get('/auth/google', [UsersController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [UsersController::class, 'handleGoogleCallback']);
 Route::get('products', [ProductsController::class, 'list'])->name('products_list');
@@ -67,3 +71,91 @@ Route::get('/prime', function () {
 Route::get('/test', function () {
     return view('test');
 });
+
+Route::get('/cryptography', function (Request $request) {
+    $data = $request->data??"Welcome to Cryptography";
+    $action = $request->action??"Encrypt";
+    $result = $request->result??"";
+    $status = "Failed";
+    if($request->action=="Encrypt") {
+        $temp = openssl_encrypt($request->data, 'aes-128-ecb', 'thisisasecretkey', OPENSSL_RAW_DATA, '');
+        if($temp) {
+            $status = 'Encrypted Successfully';
+            $result = base64_encode($temp);
+        }
+    }
+    else if($request->action=="Decrypt") {
+        $temp = base64_decode($request->data);
+        $result = openssl_decrypt($temp, 'aes-128-ecb', 'thisisasecretkey', OPENSSL_RAW_DATA, '');
+        if($result) $status = 'Decrypted Successfully';
+    }
+    else if($request->action=="Hash") {
+        $temp = hash('sha256', $request->data);
+        $result = base64_encode($temp);
+        $status = 'Hashed Successfully';
+    }
+     else if($request->action=="Sign") {
+         $path = storage_path('app/private/useremail@domain.com.pfx');
+         $password = '12345678';
+         $certificates = [];
+         $pfx = file_get_contents($path);
+         openssl_pkcs12_read($pfx, $certificates, $password);
+         $privateKey = $certificates['pkey'];
+         $signature = '';
+         if(openssl_sign($request->data, $signature, $privateKey, 'sha256')) {
+             $result = base64_encode($signature);
+             $status = 'Signed Successfully';
+         }
+     }
+     else if($request->action=="Verify") {
+         $signature = base64_decode($request->result);
+         $path = storage_path('app/public/useremail@domain.com.crt');
+         $publicKey = file_get_contents($path);
+         if(openssl_verify($request->data, $signature, $publicKey, 'sha256')) {
+             $status = 'Verified Successfully';
+         }
+     }
+     else if($request->action=="KeySend") {
+         $path = storage_path('app/public/useremail@domain.com.crt');
+         $publicKey = file_get_contents($path);
+         $temp = '';
+         if(openssl_public_encrypt($request->data, $temp, $publicKey)) {
+             $result = base64_encode($temp);
+             $status = 'Key is Encrypted Successfully';
+         }
+     }
+     else if($request->action=="KeyRecive") {
+         $path = storage_path('app/private/useremail@domain.com.pfx');
+         $password = '12345678';
+         $certificates = [];
+         $pfx = file_get_contents($path);
+         openssl_pkcs12_read($pfx, $certificates, $password);
+         $privateKey = $certificates['pkey'];
+         $encryptedKey = base64_decode($request->data);
+         $result = '';
+         if(openssl_private_decrypt($encryptedKey, $result, $privateKey)) {
+             $status = 'Key is Decrypted Successfully';
+        }
+     }
+
+    return view('cryptography', compact('data', 'result', 'action', 'status'));
+    })->name('cryptography');
+
+
+//    Route::get('/', function () {
+        // Correct function name and variable
+  //      $email = emailFromLoginCertificate();
+        
+      //  if ($email && !auth()->check()) {
+    //        $user = User::firstOrCreate(
+        //        ['email' => $email],
+          //      [
+            //        'name' => explode('@', $email)[0],
+              //      'password' => Hash::make(Str::random(32))
+      //          ]
+ //           );
+   //         Auth::login($user);
+     //   }
+        
+//        return view('welcome');
+//    })->name('home');

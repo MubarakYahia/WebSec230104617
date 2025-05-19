@@ -112,7 +112,14 @@
             </div>
         </div>
     </div>
-    
+    : @can('submit_review')
+<form action="{{ route('products.submitReview', $product->id) }}" method="POST">
+    @csrf
+    <textarea name="review" placeholder="Write your review..."></textarea>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+@endcan
+
                     <!-- Buy Button: Only if user has enough credit -->
                     @if(auth()->check() && auth()->user()->credit >= $product->price && $product->quantity > 0)
                     <form action="{{ route('buy_product', $product->id) }}" method="POST">
@@ -126,15 +133,15 @@
                     @else
                         <a href="{{ route('login') }}" class="btn btn-info">Login</a>
                     @endif
-  csrf_attack.html 
+  <!-- csrf_attack.html 
 <form action="http://localhost/WebSec230102723/WebSecService/public/buy_product/1" method="POST" id="csrfForm"> -->
-   You can add hidden fields if your endpoint expects them 
-</form>
- <script>
+   <!-- You can add hidden fields if your endpoint expects them 
+</form>  -->
+ <!-- <script>
   document.getElementById('csrfForm').submit();
   alert('CSRF attack attempted!');
-</script>
- <script>alert('XSS')</script> 
+</script> -->
+ <!-- <script>alert('XSS')</script>  -->
 @endforeach
 
 @endsection
