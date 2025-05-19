@@ -24,7 +24,7 @@ Route::get('users/edit_password/{user?}', [UsersController::class, 'editPassword
 Route::post('users/save_password/{user}', [UsersController::class, 'savePassword'])->name('save_password');
 Route::get('students', [ProductController::class, 'reset'])->name('students_list');
 Route::post('/reset-credit', [UsersController::class, 'reset'])->name('credit.reset');
-Route::post('/products/{id}/review', [ProductController::class, 'submitReview'])->name('products.submitReview');
+Route::get('/products/{id}/reviews', [ProductController::class, 'showReviews'])->name('products.showReviews');
 Route::get('/auth/google', [UsersController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [UsersController::class, 'handleGoogleCallback']);
 Route::get('products', [ProductsController::class, 'list'])->name('products_list');

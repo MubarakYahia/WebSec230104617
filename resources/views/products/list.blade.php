@@ -133,11 +133,7 @@
                     @else
                         <a href="{{ route('login') }}" class="btn btn-info">Login</a>
                         @can('submit_review')
-<form action="{{ route('products.submitReview', $product->id) }}" method="POST">
-    @csrf
-    <textarea name="review" placeholder="Write your review..."></textarea>
-    <button type="submit" class="btn btn-primary">Submit Review</button>
-</form>
+                        <a href="{{ route('products.showReviews', $product->id) }}" class="btn btn-info form-control">View Reviews</a>
 @endcan
                     @endif
   <!-- csrf_attack.html 
